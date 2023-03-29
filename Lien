@@ -1,0 +1,206 @@
+@Override
+    public BeraterSollStunden getBeraterSollstundenById(Long id) {
+
+        Optional<Sollstunden> sollstundenId = Optional.ofNullable(sollstundenRepository.findById(id)
+                .orElseThrow(() -> new SollStundenNotFoundException("Sollstunden with " + id + " not found.")));
+
+        //Optional<?> optionalO = sollstundenId.isPresent() ? Optional.empty() : Optional.of(DbMapper.mapSollstundenToBeraterSollstunden(sollstundenId.get()));
+
+
+        /*BeraterSollStunden beraterSollStunden = BeraterSollStunden.builder()
+                .id(sollstundenId.get().getId())
+                .beratername(sollstundenId.get().getBeratername())
+                .monat(sollstundenId.get().getMonat())
+                .arbeitstage(sollstundenId.get().getArbeitstage())
+                .taeglicheArbeitsstunden(sollstundenId.get().getTaeglicheArbeitsstunden())
+                .urlaubstage(sollstundenId.get().getUrlaubstage())
+                .sollstunden(sollstundenId.get().getSollstunden())
+                .schulungstage(sollstundenId.get().getSchulungstage())
+                .krankheitstage(sollstundenId.get().getKrankheitstage())
+                .sonstiges(sollstundenId.get().getSonstiges())
+                .build();*/
+
+        /*BeraterSollStunden beraterSollStunden = BeraterSollStunden.builder()
+                .id(sollstundenId.get().getId()).build(); il donne null parce qu'il manque les autres Atrributs
+                com.example.onionarchitecture.domain.exceptions.keinBeraternameAngabeException: null*/
+
+        BeraterSollStunden beraterSollStunden1 = DbMapper.mapSollstundenToBeraterSollstunden(sollstundenId.get());
+        return beraterSollStunden1;
+    }
+
+
+    //https://docs.axoniq.io/reference-guide/getting-started/quick-start (Event Sourcing)
+
+    // https://www.baeldung.com/java-optional
+
+    // https://blog.knoldus.com/java-9-enhance-your-java-8-code-with-java-9-optional-api-enhancement/
+
+    // https://entwickler.de/java/java-9-erweiterungen-der-klasse-optionalt
+
+    // https://www.tutorialspoint.com/java9/java9_optional_class_improvements.htm
+
+    // https://javadevcentral.com/optional-new-methods
+
+    // https://www.youtube.com/watch?v=cmYF2T27v5s
+
+    // https://www.youtube.com/watch?v=IYRYbPR5Gek (Maven Tutorial 03- Maven Build Phases)
+
+    // https://www.youtube.com/watch?v=FoM9_a7_Fgo (Part 1- Event Driven Architecture - CQRS and Event Sourcing - Fundamentals)
+
+    // https://docs.axoniq.io/reference-guide/architecture-overview/event-sourcing
+
+    // https://www.baeldung.com/axon-cqrs-event-sourcing
+
+    // event sourcing axon
+
+
+    /* @Override
+        public BeraterSollStunden getSomeoneById(Long id) {
+            Optional<Sollstunden> byId = sollstundenRepository.findById(id);
+
+            BeraterSollStunden beraterSollStunden = DbMapper.mapSollstundenToBeraterSollstunden(byId.get());
+
+            return beraterSollStunden;
+        }*/
+
+
+        /* @Override
+            public BeraterSollStunden updateSollstunden(BeraterSollStunden beraterSollStunden, Long id) {
+
+                sollstundenRepository.findById(id).orElseThrow(
+                        () -> new SollStundenNotFoundException("Sollstunden with id " + id + " is not found"));
+                Sollstunden saveSollstunden = DbMapper.mapToSollstunden(beraterSollStunden);
+                saveSollstunden.setId(id);
+                saveSollstunden = sollstundenRepository.save(saveSollstunden);
+                return DbMapper.mapSollstundenToBeraterSollstunden(saveSollstunden);
+            }*/
+
+
+
+            @Override
+                public List<BeraterSollStunden> getListBeraterSollstunden() {
+                    /*List<Sollstunden> sollstundenList = sollstundenRepository.findAll();
+                    List<BeraterSollStunden> collect = sollstundenList.stream()
+                            .map(DbMapper::mapSollstundenToBeraterSollstunden).collect(Collectors.toList());
+                    return collect;*/
+
+                    return sollstundenRepository.findAll().stream()
+                            .map(DbMapper::mapSollstundenToBeraterSollstunden).collect(Collectors.toList());
+                }
+
+
+                /*@Override // il marche aussi
+                    public Employee getEmployeeByEmployeeId(Long employeeId) {
+                        System.out.println(employeeId + " #########################################");
+                        return findEmployee(employeeId);
+                    }*/
+
+
+    /*@Override
+        public void erstellenEmployee(EmployeeProject employeeProject) {
+           employeeRepository.save(DbMapper.mapToEmployeeProject(employeeProject));
+        }*/
+
+
+      ------------------- SollstundenService-----------------------
+
+    /*public BeraterSollStunden updateSollstunden(SollstundenCommand cmd, Long id) {
+        BeraterSollStunden beraterSollStunden = cmd.getBeraterSollStunden();
+       return  editSollstundenService.updateSollstunden(beraterSollStunden, id);
+    }*/
+
+    -------------------- SollstudenCommandService -----------------
+
+     /* public SollstundenDto updateSollstunden(SollstundenDto sollstundenDto, Long id) {
+           SollstundenCommand cmd1 = SollstundenCommand.builder()
+                   .beraterSollStunden(DbMapper.mapSollstundenDtoToBeraterSollstunden(sollstundenDto))
+                   .build();
+
+           BeraterSollStunden beraterSollStunden = sollstundenService.updateSollstunden(cmd1, id);
+           return DbMapper.mapBeraterSollstundenToSollstundenDto(beraterSollStunden);
+       }*/
+
+
+     /*public SollstundenDto getSollstunden(Long id) {
+             //SollstundenCommand cmd = SollstundenCommand.builder().beraterSollStunden(BeraterSollStunden.builder().id(id).build()).build();
+             BeraterSollStunden sollstundenId = sollstundenService.getSollstundenId(id);
+             BeraterSollStunden beraterSollStunden = BeraterSollStunden.builder().id(id).build();
+             SollstundenDto sollstundenDto = SollstundenDto.builder().id(beraterSollStunden.getId()).build();
+             sollstundenService.getSollstundenId(beraterSollStunden.getId());
+             //return sollstundenDto;
+             return sollstundenId;}*/
+
+
+    -----------------------  SollstundenController  -----------------------------------
+
+    /*@GetMapping("/{totoId}")
+        public ResponseEntity<SollstundenDto> getSomeById(@PathVariable(value ="totoId") Long id) {
+            System.out.println(id);
+            return ResponseEntity.ok().body(sollStundenQueryService.getSomeById(id));
+        }*/
+
+
+    /*@PutMapping("/{sollstundenId}")
+        public ResponseEntity<Void> updateSollstunden(@RequestBody SollstundenDto sollstundenDto,
+                                                                @PathVariable(value = "sollstundenId") Long id) {
+            sollstudenCommandService.updateSollstunden(sollstundenDto, id);
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .build();
+        }*/
+
+        /*@PutMapping("/{sollstundenId}")
+        public ResponseEntity<SollstundenDto> updateSollstunden(@RequestBody SollstundenDto sollstundenDto,
+                                                      @PathVariable(value = "sollstundenId") Long id) {
+            return ResponseEntity
+                    .ok()
+                    .body(sollstudenCommandService.updateSollstunden(sollstundenDto, id));
+        }*/
+
+    --------------------------------- DbMapper -------------------------------------------
+
+
+    /*public static BeraterSollStunden mapToBeraterSollStunden(SollstundenDto sollstundenDto) {
+        return BeraterSollStunden.builder()
+                .id(sollstundenDto.getId())
+                .beratername(sollstundenDto.getBeratername())
+                .monat(sollstundenDto.getMonat())
+                .arbeitstage(sollstundenDto.getArbeitstage())
+                .taeglicheArbeitsstunden(sollstundenDto.getTaeglicheArbeitsstunden())
+                .urlaubstage(sollstundenDto.getUrlaubstage())
+                .sollstunden(sollstundenDto.getSollstunden())
+                .schulungstage(sollstundenDto.getSchulungstage())
+                .krankheitstage(sollstundenDto.getKrankheitstage())
+                .sonstiges(sollstundenDto.getSonstiges())
+                .build();
+    }*/
+
+    /*public static Sollstunden mapSollstundenDtoToSollstunden(SollstundenDto sollstundenDto) {
+            return Sollstunden.builder()
+                    .id(sollstundenDto.getId())
+                    .beratername(sollstundenDto.getBeratername())
+                    .monat(sollstundenDto.getMonat())
+                    .arbeitstage(sollstundenDto.getArbeitstage())
+                    .taeglicheArbeitsstunden(sollstundenDto.getTaeglicheArbeitsstunden())
+                    .urlaubstage(sollstundenDto.getUrlaubstage())
+                    .sollstunden(sollstundenDto.getSollstunden())
+                    .schulungstage(sollstundenDto.getSchulungstage())
+                    .krankheitstage(sollstundenDto.getKrankheitstage())
+                    .sonstiges(sollstundenDto.getSonstiges())
+                    .build();
+        }*/
+
+       /* public static SollstundenDto mapSollstundenToSollstundenDto(Sollstunden sollstunden) {
+            return SollstundenDto.builder()
+                    .id(sollstunden.getId())
+                    .beratername(sollstunden.getBeratername())
+                    .monat(sollstunden.getMonat())
+                    .arbeitstage(sollstunden.getArbeitstage())
+                    .taeglicheArbeitsstunden(sollstunden.getTaeglicheArbeitsstunden())
+                    .urlaubstage(sollstunden.getUrlaubstage())
+                    .sollstunden(sollstunden.getSollstunden())
+                    .schulungstage(sollstunden.getSchulungstage())
+                    .krankheitstage(sollstunden.getKrankheitstage())
+                    .sonstiges(sollstunden.getSonstiges())
+                    .build();
+        }*/

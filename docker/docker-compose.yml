@@ -1,0 +1,33 @@
+#version: '3.8'
+#
+#services:
+#  mysql:
+#    image: mysql:latest
+#    container_name: mysql
+#    restart: always
+#    environment:
+#      - MYSQL_ROOT_PASSWORD=abcd
+#      - MYSQL_DATABASE=SollstundenF
+#
+#    ports:
+#      - 3307:3306
+#    volumes:
+#      - mysqlData:/var/lib/mysql
+#
+#  backend:
+#    container_name: sollstunden
+#    image: sollstunden
+#    hostname: sollstunden
+#    build:
+#      dockerfile: Dockerfile
+#      context: .
+#    restart: always
+#    depends_on:
+#      - mysql
+#    environment:
+#      WAIT_HOSTS: mysql:3306
+#    ports:
+#      - 8083:8089
+#volumes:
+#  mysqlData:
+#    driver: local
