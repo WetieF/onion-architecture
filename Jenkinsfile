@@ -8,6 +8,9 @@ pipeline {
                //echo 'Building..'
             }
         }
+        steps {
+               bat 'mvn --version'
+        }
         stage('Test') {
             steps {
                 echo 'Testing..'
