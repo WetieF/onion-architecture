@@ -4,7 +4,8 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-               sh 'java'
+               //sh 'java'
+               echo 'Building..'
             }
         }
         stage('Test') {
